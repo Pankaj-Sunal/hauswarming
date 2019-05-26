@@ -1,0 +1,26 @@
+{
+  "name": "hauswarming_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pankaj_sunal",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.463.0",
+    "bcryptjs": "^2.4.3",
+    "busboy-body-parser": "^0.3.2",
+    "connect-busboy": "0.0.2",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-session": "^1.16.1",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.5.11",
+    "mongoose-paginate": "^5.0.3",
+    "morgan": "^1.9.1"
+  }
+}

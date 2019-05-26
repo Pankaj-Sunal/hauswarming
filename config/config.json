@@ -1,0 +1,32 @@
+{
+  "development": {
+    "config_id": "development",
+    "app_name": "hauswarming",
+    "node_port": 3000,
+    "database": "hauswarming-dev",
+    "i_am_userkey": "AKIAJNBACMFDV6T2T7KQ",
+    "i_am_Secret": "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",
+    "bucket_name": "clocrtesting",
+    "region": "us-east-1"
+  },
+  "staging": {
+    "config_id": "staging",
+    "node_port": 1503,
+    "database": "hauswarming-stag",
+    "app_name": "hauswarming",
+    "i_am_userkey": "AKIAJNBACMFDV6T2T7KQ",
+    "i_am_Secret": "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",
+    "bucket_name": "clocrtesting",
+    "region": "us-east-1"
+  },
+  "production": {
+    "config_id": "production",
+    "node_port": 8080,
+    "database": "hauswarming-prod",
+    "app_name": "hauswarming",
+    "i_am_userkey": "AKIAJNBACMFDV6T2T7KQ",
+    "i_am_Secret": "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",
+    "bucket_name": "clocrtesting",
+    "region": "us-east-1"
+  }
+}
