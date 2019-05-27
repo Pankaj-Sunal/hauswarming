@@ -7,7 +7,11 @@
     "i_am_userkey": "AKIAJNBACMFDV6T2T7KQ",
     "i_am_Secret": "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",
     "bucket_name": "clocrtesting",
-    "region": "us-east-1"
+    "region": "us-east-1",
+    "nodemailer": {
+      "user": "pankajsunal66@gmail.com",
+      "password": "ps@57417180"
+    }
   },
   "staging": {
     "config_id": "staging",

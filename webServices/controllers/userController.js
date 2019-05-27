@@ -12,65 +12,79 @@ module.exports = {
       !req.body.profilePic
     )
       return res.send({ statusCode: 400 });
-    let profilePic = commonFunction.imageUpload(req.body.profilePic);
-    if (profilePic) {
-      req.body.profilePic = profilePic.url;
-      let salt = bcrypt.genSaltSync(10);
-      req.body.password = bcrypt.hashSync(req.body.password, salt);
-      let user = await userServices.addUser(req.body);
-      if (user) {
-        return res.send({
-          statusCode: 200,
-          userId: user._id
-        });
+    try {
+      let profilePic = await commonFunction.imageUpload(req.body.profilePic);
+      if (profilePic) {
+        req.body.profilePic = profilePic.file_url;
+        let salt = bcrypt.genSaltSync(10);
+        req.body.password = bcrypt.hashSync(req.body.password, salt);
+        let user = await userServices.addUser(req.body);
+        if (user) {
+          return res.send({
+            statusCode: 200,
+            userId: user._id
+          });
+        } else {
+          return res.send({ statusCode: 500 });
+        }
       } else {
         return res.send({ statusCode: 500 });
       }
+    } catch (err) {
+      return res.send({ statusCode: 500 });
     }
   },
 
   login: async (req, res) => {
-    if (!req.body.email || !req.body.password)
-      return res.send({ statusCode: 400 });
-    let user = await userServices.getUser({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(user.password, hash))
-        return res.send({ statusCode: 200, sessionId: req.sessionID });
-      return res.send({ statusCode: 400 });
-    } else {
-      return res.send({ statusCode: 400 });
+    try {
+      if (!req.body.email || !req.body.password)
+        return res.send({ statusCode: 400 });
+      let user = await userServices.getUser({ email: req.body.email });
+      if (user) {
+        if (bcrypt.compareSync(req.body.password, user.password))
+          return res.send({ statusCode: 200, sessionId: req.sessionID });
+        return res.send({ statusCode: 400 });
+      } else {
+        return res.send({ statusCode: 400 });
+      }
+    } catch (err) {
+      return res.send({ statusCode: 500 });
     }
   },
 
   forgotPassword: async (req, res) => {
-    if (!req.body.email) return res.send({ statusCode: 400 });
-    let user = await userServices.getUser({ email: req.body.email });
-    if (user) {
-      let randomstring = Math.random()
-        .toString(36)
-        .slice(-8);
-      let html = `<h2 style="font-family:times new roman;">Dear ${user.firstName ||
-        "user"},<h2> </br> <p style="font-family:times new roman;"> Your New Password is ${randomstring}<p>`;
-      let salt = bcrypt.genSaltSync(10);
-      var set = { $set: { password: bcrypt.hashSync(randomstring, salt) } };
-      let userUpdated = await commonFunction.updateUser(
-        { email: req.body.email },
-        set
-      );
-      if (userUpdated) {
-        commonFunction.sendMail(
-          req.body.email,
-          "Forgot password",
-          html,
-          (error, sent) => {
-            console.log("Mail Sent");
-          }
+    try {
+      if (!req.body.email) return res.send({ statusCode: 400 });
+      let user = await userServices.getUser({ email: req.body.email });
+      if (user) {
+        let randomstring = Math.random()
+          .toString(36)
+          .slice(-8);
+        let html = `<h2 style="font-family:times new roman;">Dear ${user.firstName ||
+          "user"},<h2> </br> <p style="font-family:times new roman;"> Your New Password is ${randomstring}<p>`;
+        let salt = bcrypt.genSaltSync(10);
+        var set = { $set: { password: bcrypt.hashSync(randomstring, salt) } };
+        let userUpdated = await userServices.updateUser(
+          { email: req.body.email },
+          set
         );
-        return res.send({ statusCode: 200 });
+        if (userUpdated) {
+          commonFunction.sendMail(
+            req.body.email,
+            "Forgot password",
+            html,
+            (error, sent) => {
+              console.log("Mail Sent");
+            }
+          );
+          return res.send({ statusCode: 200 });
+        }
+        return res.send({ statusCode: 400 });
+      } else {
+        return res.send({ statusCode: 400 });
       }
-      return res.send({ statusCode: 400 });
-    } else {
-      return res.send({ statusCode: 400 });
+    } catch (err) {
+      return res.send({ statusCode: 500 });
     }
   },
 
@@ -82,16 +96,25 @@ module.exports = {
   },
 
   updatePassword: async (req, res) => {
-    if (!req.body.email || !req.body.password)
-      return res.send({ statusCode: 400 });
-    let salt = bcrypt.genSaltSync(10);
-    var set = { $set: { password: bcrypt.hashSync(req.body.password, salt) } };
-    let userUpdated = await commonFunction.updateUser(
-      { email: req.body.email },
-      set
-    );
-    if (userUpdated) return res.send({ statusCode: 200 });
-    return res.send({ statusCode: 400 });
+    try {
+      if (!req.body.email || !req.body.password)
+        return res.send({ statusCode: 400 });
+      let user = await userServices.getUser({ email: req.body.email });
+      if (user) {
+        let salt = bcrypt.genSaltSync(10);
+        var set = {
+          $set: { password: bcrypt.hashSync(req.body.password, salt) }
+        };
+        let userUpdated = await commonFunction.updateUser(
+          { email: req.body.email },
+          set
+        );
+        if (userUpdated) return res.send({ statusCode: 200 });
+        return res.send({ statusCode: 400 });
+      }
+    } catch (err) {
+      return res.send({ statusCode: 500 });
+    }
   },
 
   logout: async (req, res) => {

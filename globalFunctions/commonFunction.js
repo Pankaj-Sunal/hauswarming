@@ -3,6 +3,7 @@
 const config = require("../config/config"),
   AWS = require("aws-sdk"),
   uuid = require("uuid"),
+  mailer = require("nodemailer"),
   s3bucket = new AWS.S3({
     accessKeyId: global.gConfig.i_am_userkey,
     secretAccessKey: global.gConfig.i_am_Secret,
@@ -23,6 +24,7 @@ function imageUpload(base64Data) {
       }
       var innerParams = {
         Bucket: global.gConfig.bucket_name,
+        Key: data.key,
         Expires: 60 * 60 * 60
       };
 
@@ -30,6 +32,7 @@ function imageUpload(base64Data) {
         if (!err) {
           resolve({
             url: _url,
+            file_alias: data.key,
             file_url: _url.substring(0, _url.indexOf("?"))
           });
         } else {
@@ -53,7 +56,7 @@ function sendMail(email, subject, html, callback) {
       service: "GMAIL",
       auth: {
         user: `${global.gConfig.nodemailer.user}`,
-        pass: `${global.gConfig.nodemailer.pass}`
+        pass: `${global.gConfig.nodemailer.password}`
       },
       port: 587,
       host: "smtp.gmail.com"

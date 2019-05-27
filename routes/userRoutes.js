@@ -1,10 +1,11 @@
-const userController = require("../webServices/controllers/userController");
+const userController = require("../webServices/controllers/userController"),
+  router = require("express").Router();
 
-module.exports = app => {
-  app.post("/signUp", userController.signUp);
-  app.post("/login", userController.login);
-  app.post("/forgotPassword", userController.forgotPassword);
-  app.post("/imageUpload", userController.imageUpload);
-  app.post("/updatePassword", userController.updatePassword);
-  app.post("/logout", userController.logout);
-};
+router.post("/signUp", userController.signUp);
+router.post("/login", userController.login);
+router.post("/forgotPassword", userController.forgotPassword);
+router.post("/imageUpload", userController.imageUpload);
+router.post("/updatePassword", userController.updatePassword);
+router.post("/logout", userController.logout);
+
+module.exports = router;

@@ -10,14 +10,14 @@ const express = require("express"),
 const port = process.env.PORT || global.gConfig.node_port;
 
 app.use(busboy());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(busboyBodyParser());
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.json({ limit: "10mb" }));
+app.use(busboyBodyParser({ limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(cors());
 
 app.use("/api/v1", require("./routes/userRoutes"));
-require("./routes/userRoutes")(app);
+app.use("/api/v1", require("./routes/furnitureRoutes"));
 
 app.listen(port, "0.0.0.0", err => {
   if (err) {

@@ -13,7 +13,7 @@ module.exports = {
   },
 
   furnitureList: async (req, res) => {
-    if (!req.params.userId || !req.params.sessionId || !req.body.page)
+    if (!req.body.userId || !req.body.page)
       return res.send({ statusCode: 400 });
     var options = { page: req.body.page, limit: req.body.limit || 20 };
     let furnitureList = await furnitureServices.getFurnitureList({}, options);
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   likeUnlikePost: async (req, res) => {
-    if (!req.body.userId || !req.body.postId || !req.body.isLike)
+    if (!req.body.userId || !req.body.postId || req.body.isLike === undefined)
       return res.send({ statusCode: 400 });
     let furnitureData = await furnitureServices.getFurniture({
       likes: {
@@ -42,10 +42,7 @@ module.exports = {
         _id: req.body.postId
       };
       var set = {
-        $push: {
-          userId: req.body.userId,
-          isLike: req.body.isLike
-        }
+        $push: { likes: { userId: req.body.userId, isLike: req.body.isLike } }
       };
     }
     let furniture = await furnitureServices.updateFurniture(query, set);

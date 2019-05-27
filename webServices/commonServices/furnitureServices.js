@@ -30,6 +30,7 @@ const getFurnitureList = (query, options) => {
 const updateFurniture = (query, set) => {
   return new Promise((resolve, reject) => {
     furnitureModel.update(query, set, { multi: false }, (err, result) => {
+      console.log("%%%%%%%%%%%%%%%%%%", err || result);
       if (!err) resolve(result);
       reject(false);
     });

@@ -33,7 +33,7 @@ const furnitureSchema = new schema(
     likes: [
       {
         userName: String,
-        userId: Schema.Types.ObjectId,
+        userId: schema.Types.ObjectId,
         isLike: Boolean
       }
     ]

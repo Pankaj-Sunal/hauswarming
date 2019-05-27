@@ -1,10 +1,8 @@
-const furnitureController = require("../webServices/controllers/furnitureController");
+const furnitureController = require("../webServices/controllers/furnitureController"),
+  router = require("express").Router();
 
-module.exports = app => {
-  app.post("/uploadFurniture", furnitureController.uploadFurniture);
-  app.get(
-    "/furnitureList/:userId/:sessionId",
-    furnitureController.furnitureList
-  );
-  app.post("/likeUnlikePost", furnitureController.likeUnlikePost);
-};
+router.post("/uploadFurniture", furnitureController.uploadFurniture);
+router.post("/furnitureList", furnitureController.furnitureList);
+router.post("/likeUnlikePost", furnitureController.likeUnlikePost);
+
+module.exports = router;
