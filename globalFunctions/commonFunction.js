@@ -64,7 +64,13 @@ function sendMail(email, subject, html, callback) {
     .sendMail(mailBody, callback);
 }
 
+function checkAuthentication(req, res, next) {
+  console.log("---------------------", req.sessionID);
+  next();
+}
+
 module.exports = {
   imageUpload: imageUpload,
-  sendMail: sendMail
+  sendMail: sendMail,
+  checkAuthentication: checkAuthentication
 };

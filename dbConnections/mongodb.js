@@ -4,7 +4,6 @@ const mongoose = require("mongoose"),
   host = "localhost:27017",
   DB_URL = `mongodb://${host}/${db_name}`,
   session = require("express-session"),
-  cookieParser = require("cookie-parser"),
   MongoStore = require("connect-mongo")(session);
 global.Promise = mongoose.Promise;
 

@@ -16,8 +16,8 @@ app.use(busboyBodyParser({ limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(cors());
 
-app.use("/api/v1", require("./routes/userRoutes"));
-app.use("/api/v1", require("./routes/furnitureRoutes"));
+app.use("/api/v1/user", require("./routes/userRoutes"));
+app.use("/api/v1/furniture", require("./routes/furnitureRoutes"));
 
 app.listen(port, "0.0.0.0", err => {
   if (err) {

@@ -4,31 +4,37 @@ const bcrypt = require("bcryptjs"),
 
 module.exports = {
   signUp: async (req, res) => {
-    if (
-      !req.body.email ||
-      !req.body.password ||
-      !req.body.firstName ||
-      !req.body.lastName ||
-      !req.body.profilePic
-    )
-      return res.send({ statusCode: 400 });
     try {
-      let profilePic = await commonFunction.imageUpload(req.body.profilePic);
-      if (profilePic) {
-        req.body.profilePic = profilePic.file_url;
-        let salt = bcrypt.genSaltSync(10);
-        req.body.password = bcrypt.hashSync(req.body.password, salt);
-        let user = await userServices.addUser(req.body);
-        if (user) {
-          return res.send({
-            statusCode: 200,
-            userId: user._id
-          });
+      if (
+        !req.body.email ||
+        !req.body.password ||
+        !req.body.firstName ||
+        !req.body.lastName ||
+        !req.body.profilePic
+      )
+        return res.send({ statusCode: 400 });
+
+      let user = await userServices.getUser({ email: req.body.email });
+      if (!user) {
+        let profilePic = await commonFunction.imageUpload(req.body.profilePic);
+        if (profilePic) {
+          req.body.profilePic = profilePic.file_url;
+          let salt = bcrypt.genSaltSync(10);
+          req.body.password = bcrypt.hashSync(req.body.password, salt);
+          let user = await userServices.addUser(req.body);
+          if (user) {
+            return res.send({
+              statusCode: 200,
+              userId: user._id
+            });
+          } else {
+            return res.send({ statusCode: 400 });
+          }
         } else {
-          return res.send({ statusCode: 500 });
+          return res.send({ statusCode: 400 });
         }
       } else {
-        return res.send({ statusCode: 500 });
+        return res.send({ statusCode: 400 });
       }
     } catch (err) {
       return res.send({ statusCode: 500 });
