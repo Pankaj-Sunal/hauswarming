@@ -145,7 +145,8 @@ function getTxConfirmations(blockhash) {
           { txid: element.txid },
           set
         );
-        if (element.confirmations >= 6 && element.amount > 0) {
+        console.log();
+        if (element.confirmations >= 6 && element.category === "receive") {
           // Get all unspent transactions
           listUnspent().then(unspent => {
             var sendTransactions = unspent.filter(
@@ -180,9 +181,6 @@ function getTxConfirmations(blockhash) {
                                 code: 200,
                                 "tx-hash": sendTransactions,
                                 "sent-amount": transactionAmount
-                              });
-                              transactionHistoryServices.deleteTransaction({
-                                txid: element.txid
                               });
                               next();
                             })
