@@ -3,6 +3,7 @@
 const config = require("../config/config"),
   transactionHistoryServices = require("../webServices/commonServices/transactionHistoryServices"),
   bitcoinClient = require("bitcoin-core"),
+  Utils = require("../lib/utils"),
   async = require("async"),
   client = new bitcoinClient({
     username: global.gConfig.btc_username,
