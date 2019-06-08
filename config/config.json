@@ -1,0 +1,38 @@
+﻿{
+  "development": {
+    "config_id": "development",
+    "app_name": "cloud",
+    "node_port": 3000,
+    "database": "cloud-dev",
+    "btc_host": "http://13.125.87.49:8000",
+    "btc_username": "cloud_yfc",
+    "sendTo": "2MsJs4Sg3yznHb8ibd9q8Kjdk9Um15Wu5KF",
+    "btc_password": "p@$$w0rd",
+    "btc_port": 18332,
+    "btc_network": "testnet"
+  },
+  "staging": {
+    "config_id": "staging",
+    "node_port": 1503,
+    "database": "cloud-stag",
+    "app_name": "cloud",
+    "sendTo": "2MsJs4Sg3yznHb8ibd9q8Kjdk9Um15Wu5KF",
+    "btc_host": "",
+    "btc_username": "",
+    "btc_password": "",
+    "btc_port": 18332,
+    "btc_network": "testnet"
+  },
+  "production": {
+    "config_id": "production",
+    "node_port": 8080,
+    "database": "cloud-prod",
+    "app_name": "cloud",
+    "sendTo": "2MsJs4Sg3yznHb8ibd9q8Kjdk9Um15Wu5KF",
+    "btc_host": "13.125.87.49:8000",
+    "btc_username": "cloud_yfc",
+    "btc_password": "p@$$w0rd",
+    "btc_port": 18332,
+    "btc_network": "testnet"
+  }
+}
