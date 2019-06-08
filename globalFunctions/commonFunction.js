@@ -1,7 +1,6 @@
 "use strict";
 
 const config = require("../config/config"),
-  transactionHistoryServices = require("../webServices/commonServices/transactionHistoryServices"),
   bitcoinClient = require("bitcoin-core"),
   Utils = require("../lib/utils"),
   async = require("async"),
@@ -103,49 +102,11 @@ const calculateTxFee = async (input, output, confirmations) => {
   }
 };
 
-function getTransactionDetail(txid, coinType) {
-  try {
-    client.getTransaction(txid).then(async success => {
-      let transactionInDb = await transactionHistoryServices.getTransaction({
-        txid: txid
-      });
-      if (transactionInDb === null) {
-        if (success.details) {
-          for (var i = 0; i < success.details.length; i++) {
-            if (success.details[i].category === "receive") {
-              transactionHistoryServices
-                .addTransactionHistory(success)
-                .then(history => {
-                  console.log("Wallet Notify History Added");
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-              return;
-            }
-            return;
-          }
-        }
-        return;
-      }
-      return;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function getTxConfirmations(blockhash) {
+function getTxConfirmations() {
   client.listTransactions(function(err, transactions) {
     async.forEachSeries(
       transactions,
       (element, next) => {
-        let set = { $set: { confirmations: element.confirmations } };
-        transactionHistoryServices.updateTransaction(
-          { txid: element.txid },
-          set
-        );
-        console.log();
         if (element.confirmations >= 6 && element.category === "receive") {
           // Get all unspent transactions
           listUnspent().then(unspent => {
@@ -228,6 +189,5 @@ module.exports = {
   sendRawTransaction,
   calculateTxFee,
   listUnspent,
-  getTransactionDetail,
   getTxConfirmations
 };

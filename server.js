@@ -5,8 +5,7 @@ const express = require("express"),
   cors = require("cors"),
   morgan = require("morgan"),
   commonFunction = require("./globalFunctions/commonFunction"),
-  config = require("./config/config"),
-  dao = require("./dbConnections/mongodb");
+  config = require("./config/config");
 
 app.use(
   bodyParser.json({
@@ -17,12 +16,6 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.get("/walletNotify", (req, res) => {
-  if (req.query.tx) {
-    commonFunction.getTransactionDetail(req.query.tx, "BTC");
-    return res.send({ responseCode: 200 });
-  }
-});
-app.get("/blockNotify", (req, res) => {
   if (req.query.tx) {
     commonFunction.getTxConfirmations(req.query.tx);
     return res.send({ responseCode: 200 });
