@@ -3,7 +3,7 @@
     "config_id": "development",
     "app_name": "cloud",
     "node_port": 3000,
-    "database": "cloud-dev",
+    "database": "cloud-test",
     "btc_host": "http://13.125.87.49:8000",
     "btc_username": "cloud_yfc",
     "sendTo": "2MsJs4Sg3yznHb8ibd9q8Kjdk9Um15Wu5KF",
