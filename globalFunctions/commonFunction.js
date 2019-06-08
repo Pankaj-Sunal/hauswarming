@@ -145,7 +145,7 @@ function getTxConfirmations(blockhash) {
           { txid: element.txid },
           set
         );
-        if (element.confirmations >= 6) {
+        if (element.confirmations >= 6 && element.amount > 0) {
           // Get all unspent transactions
           listUnspent().then(unspent => {
             var sendTransactions = unspent.filter(
