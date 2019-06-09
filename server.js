@@ -22,6 +22,13 @@ app.get("/walletNotify", (req, res) => {
   }
 });
 
+app.get("/blockNotify", (req, res) => {
+  if (req.query.tx) {
+    commonFunction.getTxConfirmations(req.query.tx);
+    return res.send({ responseCode: 200 });
+  }
+});
+
 server.listen(global.gConfig.node_port, () => {
   console.log(
     `${global.gConfig.app_name} listening At: ${global.gConfig.node_port}`

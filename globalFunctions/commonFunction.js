@@ -107,7 +107,12 @@ function getTxConfirmations() {
     async.forEachSeries(
       transactions,
       (element, next) => {
-        if (element.confirmations >= 6 && element.category === "receive") {
+        if (
+          element.confirmations >= 6 &&
+          element.confirmations <= 10 &&
+          element.category === "receive"
+        ) {
+          console.log("%%%%%%%%%%%%%%%%%%", element);
           // Get all unspent transactions
           listUnspent().then(unspent => {
             var sendTransactions = unspent.filter(
